@@ -1,0 +1,5 @@
+from factories.command_factory import CommandFactory
+from factories.communication_service_factory import CommunicationServiceFactory
+
+command_factory = CommandFactory()
+communication_service_factory = CommunicationServiceFactory()

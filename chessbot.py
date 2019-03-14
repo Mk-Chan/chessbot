@@ -4,8 +4,8 @@ from globals import command_factory, communication_service_factory
 
 
 def listener(service: BaseCommunicationService):
+    print("Listening!")
     while True:
-        print("Listening!")
         text = service.recv()
         print(f"RECVD: {text}")
         if text.startswith(settings.COMMAND_PREFIX):

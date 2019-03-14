@@ -31,4 +31,5 @@ class IRCService(BaseCommunicationService):
             pong = 'PONG ' + text.split()[1] + '\r\n'
             self.irc.sendall(pong.encode())
 
+        text = text[text.find(":") + 1:]
         return text

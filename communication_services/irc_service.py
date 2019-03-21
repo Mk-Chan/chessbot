@@ -2,7 +2,6 @@ import base64
 import os
 import socket
 
-import settings
 from communication_services.base import BaseCommunicationService
 
 STATES = [EXPECTING_CAP, EXPECTING_AUTH, EXPECTING_CONFIRMATION, DONE] \
@@ -12,7 +11,7 @@ STATES = [EXPECTING_CAP, EXPECTING_AUTH, EXPECTING_CONFIRMATION, DONE] \
 class IRCService(BaseCommunicationService):
     name = "irc"
     active = False
-    channel = settings.IRC_CHANNEL
+    channel = None
 
     def _send(self, text):
         print(f"SEND:{text}")
@@ -35,6 +34,7 @@ class IRCService(BaseCommunicationService):
         password = os.getenv("IRC_PASSWORD")
 
         self.active = False
+        self.channel = channel
         self.irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.irc.connect((server, 6667))
 
@@ -68,7 +68,6 @@ class IRCService(BaseCommunicationService):
                     break
 
                 payload = f"{username}\0{username}\0{password}"
-                settings.IRC_PASSWORD = "\0"
                 payload_b64 = str(base64.b64encode(payload.encode("utf-8")), "utf-8")
                 self._send(f"AUTHENTICATE {payload_b64}")
                 curr_state = EXPECTING_CONFIRMATION

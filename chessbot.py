@@ -16,8 +16,11 @@ def listener(service: BaseCommunicationService):
             if command_handler is None:
                 continue
             command_args = text[space_index + 1:]
-            response = command_handler.run(command_args)
-            service.send(response)
+            try:
+                response = command_handler.run(command_args)
+                service.send(response)
+            except Exception:
+                service.send("Could not execute command sorry :p")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 import base64
+import os
 import socket
 
 import settings
@@ -10,28 +11,29 @@ STATES = [EXPECTING_CAP, EXPECTING_AUTH, EXPECTING_CONFIRMATION, DONE] \
 
 class IRCService(BaseCommunicationService):
     name = "irc"
-    init_params = [
-        settings.IRC_SERVER, settings.IRC_CHANNEL, settings.IRC_NICKNAME,
-        settings.IRC_USERNAME, settings.IRC_PASSWORD
-    ]
     active = False
     channel = settings.IRC_CHANNEL
 
     def _send(self, text):
         print(f"SEND:{text}")
-        text += "\n"
-        self.irc.sendall(text.encode())
+        self.irc.sendall(f"{text}\n".encode())
 
     def _recv(self):
         text = self.irc.recv(2040).decode("utf-8").strip("\r\n")
         print(f"RECV:{text}")
 
-        if text.find('PING') != -1:
-            self._send(f"PONG {text.split()[1]}\n")
+        if text.find("PING") != -1:
+            self._send(f"PONG {text.split()[1]}")
 
         return text
 
-    def __init__(self, server, channel, nickname, username, password):
+    def __init__(self):
+        server = os.getenv("IRC_SERVER")
+        channel = os.getenv("IRC_CHANNEL")
+        nickname = os.getenv("IRC_NICKNAME")
+        username = os.getenv("IRC_USERNAME")
+        password = os.getenv("IRC_PASSWORD")
+
         self.active = False
         self.irc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.irc.connect((server, 6667))
@@ -85,7 +87,7 @@ class IRCService(BaseCommunicationService):
         self.irc.sendall(f"JOIN {channel}".encode())
 
     def send(self, text) -> None:
-        self._send(f"PRIVMSG {self.channel} :{text}\n")
+        self._send(f"PRIVMSG {self.channel} :{text}")
 
     def recv(self) -> str:
         text = self._recv()

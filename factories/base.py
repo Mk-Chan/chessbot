@@ -38,5 +38,5 @@ class BaseFactory(ABC):
             return lazy_instance
 
         # Otherwise, instantiate the object and return it
-        instance = self.registry[key] = lazy_instance(*lazy_instance.init_params)
+        instance = self.registry[key] = lazy_instance()
         return instance

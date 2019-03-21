@@ -3,10 +3,3 @@ import os
 COMMUNICATION_SERVICE = os.getenv("COMMUNICATION_SERVICE", "cmdline")
 
 COMMAND_PREFIX = "."
-
-IRC_SERVER = os.getenv("IRC_SERVER")
-IRC_CHANNEL = os.getenv("IRC_CHANNEL")
-IRC_NICKNAME = os.getenv("IRC_NICKNAME")
-
-IRC_USERNAME = os.getenv("IRC_USERNAME")
-IRC_PASSWORD = os.getenv("IRC_PASSWORD")

@@ -13,3 +13,7 @@ class BaseCommunicationService(ABC):
     @abstractmethod
     def recv(self) -> str:
         pass
+
+    @abstractmethod
+    def is_active(self) -> bool:
+        return False

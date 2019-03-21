@@ -7,7 +7,6 @@ def listener(service: BaseCommunicationService):
     print("Listening!")
     while True:
         text = service.recv()
-        print(f"RECVD: {text}")
         if text.startswith(settings.COMMAND_PREFIX):
             space_index = text.find(" ")
             if space_index == -1:
@@ -24,4 +23,5 @@ def listener(service: BaseCommunicationService):
 if __name__ == "__main__":
     communication_service = communication_service_factory \
         .get_instance(settings.COMMUNICATION_SERVICE)
-    listener(communication_service)
+    if communication_service.is_active():
+        listener(communication_service)

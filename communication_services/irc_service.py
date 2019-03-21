@@ -13,7 +13,7 @@ class IRCService(BaseCommunicationService):
     active = False
     channel = None
 
-    def _send(self, text):
+    def _send(self, text: str):
         print(f"SEND:{text}")
         self.irc.sendall(f"{text}\n".encode())
 
@@ -83,7 +83,7 @@ class IRCService(BaseCommunicationService):
             print("Failed to connect")
             return
         self.active = True
-        self.irc.sendall(f"JOIN {channel}".encode())
+        self._send(f"JOIN {self.channel}")
 
     def send(self, text) -> None:
         self._send(f"PRIVMSG {self.channel} :{text}")

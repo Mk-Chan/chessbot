@@ -14,15 +14,17 @@ class IRCService(BaseCommunicationService):
     channel = None
 
     def _send(self, text: str):
-        print(f"SEND:{text}")
+        if text.find("PONG") == -1:
+            print(f"SEND:{text}")
         self.irc.sendall(f"{text}\n".encode())
 
     def _recv(self):
         text = self.irc.recv(2040).decode("utf-8").strip("\r\n")
-        print(f"RECV:{text}")
 
         if text.find("PING") != -1:
             self._send(f"PONG {text.split()[1]}")
+        else:
+            print(f"RECV:{text}")
 
         return text
 

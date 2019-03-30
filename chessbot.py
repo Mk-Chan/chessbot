@@ -6,7 +6,11 @@ from globals import command_factory, communication_service_factory
 def listener(service: BaseCommunicationService):
     print("Listening!")
     while True:
-        text = service.recv()
+        try:
+            text = service.recv()
+        except Exception:
+            print("Received invalid response!")
+            continue
         if text.startswith(settings.COMMAND_PREFIX):
             space_index = text.find(" ")
             if space_index == -1:

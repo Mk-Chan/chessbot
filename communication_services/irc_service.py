@@ -92,7 +92,8 @@ class IRCService(BaseCommunicationService):
 
     def recv(self) -> str:
         text = self._recv()
-        text = text[text.find(":", 1) + 1:]
+        post_privmsg = text[text.find("PRIVMSG"):]
+        text = post_privmsg[post_privmsg.find(":") + 1:]
         return text
 
     def is_active(self) -> bool:

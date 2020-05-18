@@ -4,7 +4,7 @@ from commands.base import BaseCommand
 from utils import filtered_split
 
 
-class Elo():
+class Elo(object):
     def __init__(self, wins, losses, draws):
         self.wins = wins
         self.losses = losses

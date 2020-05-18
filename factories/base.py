@@ -31,12 +31,6 @@ class BaseFactory(ABC):
     def get_instance(self, key):
         if key not in self.registry:
             return None
-        lazy_instance = self.registry[key]
 
-        # If type has been instantiated, return the object
-        if isinstance(lazy_instance, self.base_class):
-            return lazy_instance
-
-        # Otherwise, instantiate the object and return it
-        instance = self.registry[key] = lazy_instance()
-        return instance
+        # Always instantiate the object and return it, no lazy
+        return self.registry[key]()

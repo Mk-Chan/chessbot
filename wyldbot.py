@@ -8,6 +8,8 @@ def listener(service: BaseCommunicationService):
     while True:
         try:
             text = service.recv()
+            if text == None:
+                break
         except Exception:
             print("Received invalid response!")
             continue
@@ -28,7 +30,8 @@ def listener(service: BaseCommunicationService):
 
 
 if __name__ == "__main__":
-    communication_service = communication_service_factory \
-        .get_instance(settings.COMMUNICATION_SERVICE)
-    if communication_service.is_active():
-        listener(communication_service)
+    while True:
+        communication_service = communication_service_factory \
+            .get_instance(settings.COMMUNICATION_SERVICE)
+        if communication_service.is_active():
+            listener(communication_service)

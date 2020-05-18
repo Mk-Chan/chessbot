@@ -21,6 +21,9 @@ class IRCService(BaseCommunicationService):
     def _recv(self):
         text = self.irc.recv(2040).decode("utf-8").strip("\r\n")
 
+        if len(text) == 0:
+            return None
+
         if text.find("PING") != -1:
             self._send(f"PONG {text.split()[1]}")
         else:
@@ -92,6 +95,8 @@ class IRCService(BaseCommunicationService):
 
     def recv(self) -> str:
         text = self._recv()
+        if text == None:
+            return None
         post_privmsg = text[text.find("PRIVMSG"):]
         text = post_privmsg[post_privmsg.find(":") + 1:]
         return text
